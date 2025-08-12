@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persyaratan Ekspor Tumbuhan</title>
+    <title>Lintanx. Layanan Informasi Tumbuhan Ekspor</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font: Inter -->
@@ -125,6 +125,23 @@
             position: relative; /* Pastikan di atas global-overlay */
             z-index: 2;
         }
+
+        /* Gaya baru untuk bilah pencarian agar seragam dengan kartu transparent-card */
+        .search-bar-card {
+            background-color: rgba(255, 255, 255, 0.2); /* Sama dengan transparent-card */
+            backdrop-filter: blur(5px); /* Sama dengan transparent-card */
+            color: white; /* Pastikan teks di dalamnya juga putih */
+        }
+        .search-bar-card input {
+            color: white; /* Warna teks input agar terlihat di latar belakang transparan */
+            background-color: transparent; /* Pastikan background input juga transparan */
+        }
+        .search-bar-card input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Warna placeholder yang sedikit transparan */
+        }
+        .search-bar-card .border-gray-300 {
+            border-color: rgba(255, 255, 255, 0.4); /* Warna border yang lebih terang dan transparan */
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -142,15 +159,12 @@
             <header class="hero-background">
                 <div class="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-4 mx-auto">
                     <!-- Logo Lintanx dari tautan GitHub -->
-                    <img src="https://raw.githubusercontent.com/cwirabayu-boop/Lintanx/refs/heads/master/Lintanx_BW.png" alt="Logo Lintanx" class="w-1/2 h-auto mx-auto mb-4">
+                    <img src="https://raw.githubusercontent.com/cwirabayu-boop/Lintanx/refs/heads/master/2.png" alt="Logo Lintanx" class="w-1/2 h-auto mx-auto mb-4">
 
                     <!-- Bilah Pencarian Baru -->
-                    <div class="flex flex-col w-full max-w-3xl p-2 bg-white rounded-full shadow-lg md:flex-row mb-8">
-                        <div class="flex items-center flex-grow px-4 py-2 border-b md:border-r md:border-b-0 border-gray-300">
-                            <input type="text" id="inputNegara" placeholder="Cari Negara" class="w-full bg-transparent focus:outline-none text-gray-800 placeholder-gray-500">
-                        </div>
-                        <div class="flex items-center flex-grow px-4 py-2 border-b md:border-r md:border-b-0 border-gray-300">
-                            <input type="text" id="inputProduk" placeholder="Cari Produk" class="w-full bg-transparent focus:outline-none text-gray-800 placeholder-gray-500">
+                    <div class="flex flex-col w-full max-w-3xl p-2 rounded-full shadow-lg md:flex-row mb-8 search-bar-card">
+                        <div class="flex items-center flex-grow px-4 py-2">
+                            <input type="text" id="inputPencarianGabungan" placeholder="Cari Negara/Produk Anda Disini" class="w-full focus:outline-none">
                         </div>
                         <button id="tombolCari" class="w-full px-6 py-3 mt-2 text-white bg-green-500 rounded-full md:w-auto md:mt-0 md:ml-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50">Telusuri</button>
                     </div>
@@ -531,8 +545,7 @@
         const productCountriesPage = document.getElementById('productCountriesPage');
 
         // Elemen bilah pencarian baru
-        const inputNegara = document.getElementById('inputNegara');
-        const inputProduk = document.getElementById('inputProduk');
+        const inputPencarianGabungan = document.getElementById('inputPencarianGabungan');
         const tombolCari = document.getElementById('tombolCari');
 
         // Tombol navigasi utama
@@ -639,7 +652,7 @@
                 return 'https://media.istockphoto.com/id/1398462062/id/vektor/bendera-vietnam.jpg?s=612x612&w=0&k=20&c=DXt0P-FCU2XIXxaZjDEQl5tIDKdNLYFTGWpxr-HRDVM=';
             }
             else {
-                const countryCode = countryName.substring(0, 2).toUpperCase();
+                const countryCode = countryName.substring(0, 2).toUpperCase(); 
                 return `https://placehold.co/150x120/CCCCCC/666666?text=${countryCode}`;
             }
         }
@@ -685,8 +698,7 @@
             _hideAllPages();
             mainPage.classList.remove('hidden-page');
             // Reset search inputs when returning to main page
-            if (inputNegara) inputNegara.value = '';
-            if (inputProduk) inputProduk.value = '';
+            if (inputPencarianGabungan) inputPencarianGabungan.value = '';
         }
 
         // Menampilkan halaman negara tujuan dan menyembunyikan halaman lainnya
@@ -960,63 +972,46 @@
 
         // Fungsi untuk melakukan pencarian dari bilah pencarian utama
         function lakukanPencarian() {
-            const negaraCari = inputNegara.value.toLowerCase().trim();
-            const produkCari = inputProduk.value.toLowerCase().trim();
+            const searchTerm = inputPencarianGabungan.value.toLowerCase().trim();
 
-            if (negaraCari && produkCari) {
-                // Keduanya dicari
-                let combinedCountries = exportCountriesData.filter(country =>
-                    country.negara.toLowerCase().includes(negaraCari)
-                ).map(country => {
-                    const matchedProducts = country.produk_list.filter(product =>
-                        product.nama.toLowerCase().includes(produkCari)
-                    );
-                    return {
-                        ...country,
-                        produk_list: matchedProducts
-                    };
-                }).filter(country => country.produk_list.length > 0);
+            if (!searchTerm) {
+                showMainPage();
+                return;
+            }
 
-                if (combinedCountries.length > 0) {
-                    // Jika ada hasil, tampilkan di halaman negara dan produk
-                    // Untuk saat ini, kita akan menampilkan negara yang cocok terlebih dahulu
-                    showNegaraTujuanPage(combinedCountries);
-                    // showExportProductListPage() with filtered products based on combinedCountries
-                    let productsFromCombined = [];
-                    combinedCountries.forEach(country => {
-                        productsFromCombined = productsFromCombined.concat(country.produk_list);
-                    });
-                    showExportProductListPage(productsFromCombined);
+            let foundCountryMatch = false;
+            let foundProductMatch = false;
+
+            // Coba cari sebagai negara
+            let filteredCountries = exportCountriesData.filter(country =>
+                country.negara.toLowerCase().includes(searchTerm)
+            );
+            if (filteredCountries.length > 0) {
+                foundCountryMatch = true;
+                showNegaraTujuanPage(filteredCountries);
+            }
+
+            // Coba cari sebagai produk
+            let filteredProducts = allUniqueProductsData.filter(product =>
+                product.nama.toLowerCase().includes(searchTerm)
+            );
+            if (filteredProducts.length > 0) {
+                foundProductMatch = true;
+                // Jika sudah ada halaman negara yang ditampilkan, kita mungkin ingin menampilkan produk juga, atau sebaliknya.
+                // Untuk kesederhanaan, kita akan prioritaskan menampilkan daftar produk jika ada kecocokan produk.
+                // Anda bisa menyesuaikan logika ini jika ada preferensi lain (misal: jika ada kecocokan negara DAN produk, tampilkan hasil yang paling relevan).
+                if (!foundCountryMatch) { // Jika belum ditampilkan halaman negara
+                     showExportProductListPage(filteredProducts);
                 } else {
-                    showCustomErrorMessage('Tidak ada negara atau produk yang cocok dengan kriteria pencarian Anda.');
-                    showMainPage();
-                }
-
-            } else if (negaraCari) {
-                // Hanya negara yang dicari
-                let filteredCountries = exportCountriesData.filter(country =>
-                    country.negara.toLowerCase().includes(negaraCari)
-                );
-                if (filteredCountries.length > 0) {
-                    showNegaraTujuanPage(filteredCountries);
-                } else {
-                    showCustomErrorMessage('Tidak ada negara yang cocok dengan kriteria pencarian Anda.');
-                    showMainPage();
-                }
-
-            } else if (produkCari) {
-                // Hanya produk yang dicari
-                let filteredProducts = allUniqueProductsData.filter(product =>
-                    product.nama.toLowerCase().includes(produkCari)
-                );
-                if (filteredProducts.length > 0) {
+                    // Jika kedua-duanya match, tampilkan keduanya (ini butuh perubahan di UI untuk menampilkan 2 daftar sekaligus)
+                    // Untuk saat ini, kita akan menampilkan halaman produk saja jika kedua-duanya match.
                     showExportProductListPage(filteredProducts);
-                } else {
-                    showCustomErrorMessage('Tidak ada produk yang cocok dengan kriteria pencarian Anda.');
-                    showMainPage();
                 }
-            } else {
-                // Jika tidak ada input pencarian, kembali ke halaman utama
+            }
+
+
+            if (!foundCountryMatch && !foundProductMatch) {
+                showCustomErrorMessage('Tidak ada negara atau produk yang cocok dengan kriteria pencarian Anda.');
                 showMainPage();
             }
         }
@@ -1029,15 +1024,8 @@
         if (tombolCari) {
             tombolCari.addEventListener('click', lakukanPencarian);
         }
-        if (inputNegara) {
-            inputNegara.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    lakukanPencarian();
-                }
-            });
-        }
-        if (inputProduk) {
-            inputProduk.addEventListener('keypress', function(event) {
+        if (inputPencarianGabungan) {
+            inputPencarianGabungan.addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
                     lakukanPencarian();
                 }
