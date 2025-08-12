@@ -20,7 +20,20 @@
             background-position: center; /* Memusatkan gambar */
             background-attachment: fixed; /* Memastikan gambar tetap saat menggulir */
             background-color: transparent; /* Menghilangkan warna latar belakang body */
+            position: relative; /* Diperlukan untuk penempatan global-overlay */
         }
+        /* Overlay global yang menutupi seluruh halaman */
+        #global-overlay {
+            position: fixed; /* Tetap pada viewport saat digulir */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Lapisan hitam transparan (50% opacity) */
+            z-index: 1; /* Di bawah konten utama */
+        }
+
+        /* Hero background sekarang tidak perlu background color lagi karena sudah ada global-overlay */
         .hero-background {
             position: relative;
             height: 400px; /* Tinggi hero section */
@@ -31,16 +44,10 @@
             text-align: center;
             color: white;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.2); /* Menjadikan hero sedikit transparan untuk menunjukkan background body */
+            /* background-color: rgba(0, 0, 0, 0.2); <-- Ini dihapus */
+            z-index: 2; /* Pastikan di atas global-overlay */
         }
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Overlay gelap */
-        }
+        /* .overlay class dihapus karena diganti dengan #global-overlay */
         .hidden-page {
             display: none;
         }
@@ -78,6 +85,8 @@
         .transparent-footer {
             background-color: rgba(0, 0, 0, 0.5); /* Latar belakang footer sedikit transparan */
             color: white; /* Ubah warna teks agar terlihat di atas latar belakang gelap */
+            position: relative; /* Pastikan di atas global-overlay */
+            z-index: 2;
         }
 
         /* Gaya baru untuk halaman konten selain halaman utama */
@@ -86,6 +95,8 @@
             backdrop-filter: blur(8px); /* Efek blur lebih kuat */
             min-height: calc(100vh - 100px); /* Sesuaikan tinggi agar tidak menutupi footer */
             padding-bottom: 50px; /* Tambahkan padding agar konten tidak terlalu dekat dengan footer */
+            position: relative; /* Pastikan di atas global-overlay */
+            z-index: 2;
         }
 
         /* Gaya baru untuk kartu di dalam halaman konten */
@@ -93,10 +104,18 @@
             background-color: rgba(255, 255, 255, 0.7); /* Lebih solid dari hero card, tapi masih transparan */
             backdrop-filter: blur(10px); /* Efek blur yang lebih kuat untuk memisahkan dari background halaman */
         }
-        /* Gaya .logo-background telah dihapus */
+
+        /* Kontainer utama aplikasi harus di atas overlay */
+        #appContainer {
+            position: relative;
+            z-index: 2; /* Pastikan semua konten aplikasi berada di atas global-overlay */
+        }
     </style>
 </head>
 <body class="bg-gray-100">
+
+    <!-- Lapisan overlay hitam transparan yang menutupi seluruh halaman -->
+    <div id="global-overlay"></div>
 
     <!-- Kontainer utama untuk semua "halaman" -->
     <div id="appContainer">
@@ -104,10 +123,10 @@
         <!-- Halaman Utama (Main Page) -->
         <div id="mainPage">
             <header class="hero-background">
-                <div class="overlay"></div>
+                <!-- <div class="overlay"></div> <-- Ini dihapus karena sudah ada global-overlay -->
                 <div class="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-4 mx-auto">
-                    <!-- Logo SiPET dikembalikan ke teks asli -->
-                    <img src="Lintanx_BW.png" alt="Logo Lintanx" class="w-96 h-auto mx-auto mb-auto">
+                    <!-- Logo Lintanx dari tautan GitHub -->
+                    <img src="https://raw.githubusercontent.com/cwirabayu-boop/Lintanx/refs/heads/main/Lintanx_BW.png" alt="Logo Lintanx" class="w-96 h-auto mx-auto mb-auto">
 
                     <!-- Bagian bilah pencarian telah dihilangkan dari sini -->
 
@@ -214,7 +233,7 @@
                 
                 <!-- Tombol NPPO - DIPINDAH DI SINI -->
                 <div class="mt-8 mb-8 text-center"> <!-- Menambahkan margin-bottom agar tidak terlalu dekat dengan konten persyaratan -->
-                    <a id="nppoLink" href="#" target="_blank" class="inline-block w-full px-6 py-3 text-white font-semibold bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50">
+                    <a id="nppoLink" href="#" target="_blank" class="inline-block w-full px-6 py-3 text-white font-semibold bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-400 focus:ring-opacity-50">
                         Kunjungi Website NPPO <span id="nppoCountryName"></span> &rarr;
                     </a>
                 </div>
