@@ -184,6 +184,11 @@
         <!-- ========================================================= -->
         <div id="negaraTujuanPage" class="hidden-page content-page-background">
             <div class="container mx-auto px-4 py-8">
+                <!-- Tombol Kembali -->
+                <button id="btnBackNegaraTujuan" class="px-4 py-2 mb-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Kembali
+                </button>
                 <!-- Breadcrumbs -->
                 <nav class="mb-6 text-sm text-gray-600">
                     <a href="#" id="breadcrumbHomeNegara" class="hover:underline">Home</a> &gt;
@@ -223,6 +228,11 @@
         <!-- ========================================================= -->
         <div id="productDetailPage" class="hidden-page content-page-background">
             <div class="container mx-auto px-4 py-8">
+                <!-- Tombol Kembali -->
+                <button id="btnBackProductDetail" class="px-4 py-2 mb-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Kembali
+                </button>
                 <!-- Breadcrumbs -->
                 <nav class="mb-6 text-sm text-gray-600">
                     <a href="#" id="breadcrumbHomeProduct" class="hover:underline">Home</a> &gt;
@@ -245,6 +255,11 @@
         <!-- ========================================================= -->
         <div id="exportRequirementsPage" class="hidden-page content-page-background">
             <div class="container mx-auto px-4 py-8">
+                <!-- Tombol Kembali -->
+                <button id="btnBackExportRequirements" class="px-4 py-2 mb-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Kembali
+                </button>
                 <!-- Breadcrumbs -->
                 <nav class="mb-6 text-sm text-gray-600">
                     <a href="#" id="breadcrumbHomeReq" class="hover:underline">Home</a> &gt;
@@ -301,6 +316,11 @@
         <!-- ========================================================= -->
         <div id="exportProductListPage" class="hidden-page content-page-background">
             <div class="container mx-auto px-4 py-8">
+                <!-- Tombol Kembali -->
+                <button id="btnBackExportProductList" class="px-4 py-2 mb-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Kembali
+                </button>
                 <!-- Breadcrumbs -->
                 <nav class="mb-6 text-sm text-gray-600">
                     <a href="#" id="breadcrumbHomeProdukList" class="hover:underline">Home</a> &gt;
@@ -322,6 +342,11 @@
         <!-- ========================================================= -->
         <div id="productCountriesPage" class="hidden-page content-page-background">
             <div class="container mx-auto px-4 py-8">
+                <!-- Tombol Kembali -->
+                <button id="btnBackProductCountries" class="px-4 py-2 mb-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Kembali
+                </button>
                 <!-- Breadcrumbs -->
                 <nav class="mb-6 text-sm text-gray-600">
                     <a href="#" id="breadcrumbHomeProductCountries" class="hover:underline">Home</a> &gt;
@@ -560,12 +585,20 @@
         const productCountriesPageSubtext = document.getElementById('productCountriesPageSubtext');
         const countriesForProductContainer = document.getElementById('countriesForProductContainer');
 
+        // New Back Buttons
+        const btnBackNegaraTujuan = document.getElementById('btnBackNegaraTujuan');
+        const btnBackProductDetail = document.getElementById('btnBackProductDetail');
+        const btnBackExportRequirements = document.getElementById('btnBackExportRequirements');
+        const btnBackExportProductList = document.getElementById('btnBackExportProductList');
+        const btnBackProductCountries = document.getElementById('btnBackProductCountries');
+
         /* ========================================================= */
         /* Variabel State (Penyimpanan Data Sementara) */
         /* ========================================================= */
         let selectedCountryData = null; // Menyimpan data negara yang dipilih
         let selectedProductForCountriesPage = null; // Menyimpan data produk yang dipilih untuk halaman negara-negara penjual produk
         let selectedProductForRequirements = null; // Menyimpan data produk yang dipilih untuk halaman persyaratan
+        let lastPageBeforeRequirements = { id: '', data: null }; // Melacak halaman sebelumnya sebelum masuk ke halaman Persyaratan
 
         /* ========================================================= */
         /* Fungsi Pembantu */
@@ -611,18 +644,46 @@
             }
         }
 
+        // Fungsi untuk menyembunyikan semua halaman
+        function _hideAllPages() {
+            mainPage.classList.add('hidden-page');
+            negaraTujuanPage.classList.add('hidden-page');
+            productDetailPage.classList.add('hidden-page');
+            exportRequirementsPage.classList.add('hidden-page');
+            exportProductListPage.classList.add('hidden-page');
+            productCountriesPage.classList.add('hidden-page');
+        }
+
+        // Fungsi untuk menampilkan pesan error kustom (menggantikan alert)
+        function showCustomErrorMessage(message) {
+            const appContainer = document.getElementById('appContainer');
+            const messageBox = document.createElement('div');
+            messageBox.className = 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative z-50 transition-all duration-300 transform scale-0 opacity-0';
+            messageBox.innerHTML = `<strong>Error!</strong><span class="block sm:inline"> ${message}</span>`;
+            appContainer.appendChild(messageBox);
+
+            // Animate in
+            setTimeout(() => {
+                messageBox.classList.remove('scale-0', 'opacity-0');
+                messageBox.classList.add('scale-100', 'opacity-100');
+            }, 10); // Small delay to allow render
+
+            // Animate out and remove after 3 seconds
+            setTimeout(() => {
+                messageBox.classList.remove('scale-100', 'opacity-100');
+                messageBox.classList.add('scale-0', 'opacity-0');
+                setTimeout(() => messageBox.remove(), 300); // Remove after transition
+            }, 3000);
+        }
+
         /* ========================================================= */
         /* Fungsi Navigasi Halaman */
         /* ========================================================= */
 
         // Menampilkan halaman utama dan menyembunyikan halaman lainnya
         function showMainPage() {
+            _hideAllPages();
             mainPage.classList.remove('hidden-page');
-            negaraTujuanPage.classList.add('hidden-page');
-            productDetailPage.classList.add('hidden-page');
-            exportRequirementsPage.classList.add('hidden-page');
-            exportProductListPage.classList.add('hidden-page');
-            productCountriesPage.classList.add('hidden-page');
             // Reset search inputs when returning to main page
             if (inputNegara) inputNegara.value = '';
             if (inputProduk) inputProduk.value = '';
@@ -631,12 +692,8 @@
         // Menampilkan halaman negara tujuan dan menyembunyikan halaman lainnya
         // Menerima optional parameter `countriesToFilter` untuk menampilkan hasil filter
         function showNegaraTujuanPage(countriesToFilter = null) {
-            mainPage.classList.add('hidden-page');
+            _hideAllPages();
             negaraTujuanPage.classList.remove('hidden-page');
-            productDetailPage.classList.add('hidden-page');
-            exportRequirementsPage.classList.add('hidden-page');
-            exportProductListPage.classList.add('hidden-page');
-            productCountriesPage.classList.add('hidden-page');
 
             const countries = countriesToFilter || exportCountriesData;
             filterAndRenderCountries('Semua Negara', countries); // Panggil dengan data yang difilter atau semua data
@@ -644,11 +701,7 @@
 
         // Menampilkan halaman detail produk untuk negara tertentu
         function showProductDetailPage(countryName) {
-            mainPage.classList.add('hidden-page');
-            negaraTujuanPage.classList.add('hidden-page');
-            exportRequirementsPage.classList.add('hidden-page');
-            exportProductListPage.classList.add('hidden-page');
-            productCountriesPage.classList.add('hidden-page');
+            _hideAllPages();
             productDetailPage.classList.remove('hidden-page');
 
             selectedCountryData = exportCountriesData.find(country => country.negara === countryName);
@@ -660,18 +713,15 @@
                 renderProducts(selectedCountryData.produk_list, selectedCountryData.negara);
             } else {
                 console.error("Data negara atau produk tidak ditemukan:", countryName);
-                showNegaraTujuanPage(); // Kembali ke daftar negara jika tidak ditemukan
+                showCustomErrorMessage(`Negara "${countryName}" tidak ditemukan.`);
+                showMainPage(); // Kembali ke halaman utama jika data tidak ditemukan
             }
         }
 
         // Menampilkan halaman daftar semua produk ekspor
         // Menerima optional parameter `productsToFilter` untuk menampilkan hasil filter
         function showExportProductListPage(productsToFilter = null) {
-            mainPage.classList.add('hidden-page');
-            negaraTujuanPage.classList.add('hidden-page');
-            productDetailPage.classList.add('hidden-page');
-            exportRequirementsPage.classList.add('hidden-page');
-            productCountriesPage.classList.add('hidden-page');
+            _hideAllPages();
             exportProductListPage.classList.remove('hidden-page');
 
             const products = productsToFilter || allUniqueProductsData;
@@ -684,11 +734,7 @@
 
         // Menampilkan halaman negara-negara penjual produk tertentu
         function showProductCountriesPage(productName) {
-            mainPage.classList.add('hidden-page');
-            negaraTujuanPage.classList.add('hidden-page');
-            productDetailPage.classList.add('hidden-page');
-            exportRequirementsPage.classList.add('hidden-page');
-            exportProductListPage.classList.add('hidden-page');
+            _hideAllPages();
             productCountriesPage.classList.remove('hidden-page');
 
             selectedProductForCountriesPage = allUniqueProductsData.find(p => p.nama === productName);
@@ -701,17 +747,14 @@
                 renderCountriesForProduct(selectedProductForCountriesPage.countries_exporting_list, selectedProductForCountriesPage.nama);
             } else {
                 console.error("Data produk tidak ditemukan:", productName);
+                showCustomErrorMessage(`Produk "${productName}" tidak ditemukan.`);
                 showExportProductListPage(); // Kembali ke daftar semua produk jika tidak ditemukan
             }
         }
 
         // Menampilkan halaman persyaratan ekspor untuk produk dan negara spesifik
-        function showExportRequirementsPage(countryName, productName) {
-            mainPage.classList.add('hidden-page');
-            negaraTujuanPage.classList.add('hidden-page');
-            productDetailPage.classList.add('hidden-page');
-            exportProductListPage.classList.add('hidden-page');
-            productCountriesPage.classList.add('hidden-page');
+        function showExportRequirementsPage(countryName, productName, sourcePageId = '', sourcePageData = null) {
+            _hideAllPages();
             exportRequirementsPage.classList.remove('hidden-page');
 
             const country = exportCountriesData.find(c => c.negara === countryName);
@@ -720,6 +763,10 @@
             if (country && product) {
                 selectedProductForRequirements = product;
                 selectedCountryData = country;
+
+                // Set lastPageBeforeRequirements based on how we arrived here
+                lastPageBeforeRequirements = { id: sourcePageId, data: sourcePageData };
+
                 requirementsPageTitle.textContent = `Ekspor Produk ${product.nama} ke ${country.negara}`;
                 requirementsPageSubtext.innerHTML = `Berikut ini informasi persyaratan ekspor terkait produk yang akan diekspor ke <span id="countryNameForReq">${country.negara}</span>.`;
 
@@ -740,7 +787,12 @@
                 breadcrumbCurrentReq.textContent = `Persyaratan`;
             } else {
                 console.error("Data negara atau produk tidak ditemukan:", countryName, productName);
-                showProductDetailPage(countryName);
+                showCustomErrorMessage(`Informasi persyaratan untuk "${productName}" ke "${countryName}" tidak ditemukan.`);
+                if (selectedCountryData) {
+                    showProductDetailPage(selectedCountryData.negara);
+                } else {
+                    showMainPage();
+                }
             }
         }
 
@@ -803,7 +855,8 @@
                     event.preventDefault();
                     const country = event.target.dataset.country;
                     const product = event.target.dataset.product;
-                    showExportRequirementsPage(country, product);
+                    // Pass the current page context to showExportRequirementsPage
+                    showExportRequirementsPage(country, product, 'productDetailPage', country);
                 });
             });
         }
@@ -860,7 +913,8 @@
                     </div>
                 `;
                 countryCard.addEventListener('click', () => {
-                    showExportRequirementsPage(countryName, productName);
+                    // Pass the current page context to showExportRequirementsPage
+                    showExportRequirementsPage(countryName, productName, 'productCountriesPage', productName);
                 });
                 countriesForProductContainer.appendChild(countryCard);
             });
@@ -924,20 +978,17 @@
                 }).filter(country => country.produk_list.length > 0);
 
                 if (combinedCountries.length > 0) {
+                    // Jika ada hasil, tampilkan di halaman negara dan produk
+                    // Untuk saat ini, kita akan menampilkan negara yang cocok terlebih dahulu
                     showNegaraTujuanPage(combinedCountries);
+                    // showExportProductListPage() with filtered products based on combinedCountries
                     let productsFromCombined = [];
                     combinedCountries.forEach(country => {
                         productsFromCombined = productsFromCombined.concat(country.produk_list);
                     });
                     showExportProductListPage(productsFromCombined);
                 } else {
-                    // Mengganti alert dengan tampilan pesan di UI (contoh sederhana)
-                    const appContainer = document.getElementById('appContainer');
-                    const messageBox = document.createElement('div');
-                    messageBox.className = 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative z-50';
-                    messageBox.innerHTML = '<strong>Error!</strong><span class="block sm:inline"> Tidak ada negara atau produk yang cocok dengan kriteria pencarian Anda.</span>';
-                    appContainer.appendChild(messageBox);
-                    setTimeout(() => messageBox.remove(), 3000); // Hapus pesan setelah 3 detik
+                    showCustomErrorMessage('Tidak ada negara atau produk yang cocok dengan kriteria pencarian Anda.');
                     showMainPage();
                 }
 
@@ -949,13 +1000,7 @@
                 if (filteredCountries.length > 0) {
                     showNegaraTujuanPage(filteredCountries);
                 } else {
-                    // Mengganti alert dengan tampilan pesan di UI (contoh sederhana)
-                    const appContainer = document.getElementById('appContainer');
-                    const messageBox = document.createElement('div');
-                    messageBox.className = 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative z-50';
-                    messageBox.innerHTML = '<strong>Error!</strong><span class="block sm:inline"> Tidak ada negara yang cocok dengan kriteria pencarian Anda.</span>';
-                    appContainer.appendChild(messageBox);
-                    setTimeout(() => messageBox.remove(), 3000); // Hapus pesan setelah 3 detik
+                    showCustomErrorMessage('Tidak ada negara yang cocok dengan kriteria pencarian Anda.');
                     showMainPage();
                 }
 
@@ -967,13 +1012,7 @@
                 if (filteredProducts.length > 0) {
                     showExportProductListPage(filteredProducts);
                 } else {
-                    // Mengganti alert dengan tampilan pesan di UI (contoh sederhana)
-                    const appContainer = document.getElementById('appContainer');
-                    const messageBox = document.createElement('div');
-                    messageBox.className = 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative z-50';
-                    messageBox.innerHTML = '<strong>Error!</strong><span class="block sm:inline"> Tidak ada produk yang cocok dengan kriteria pencarian Anda.</span>';
-                    appContainer.appendChild(messageBox);
-                    setTimeout(() => messageBox.remove(), 3000); // Hapus pesan setelah 3 detik
+                    showCustomErrorMessage('Tidak ada produk yang cocok dengan kriteria pencarian Anda.');
                     showMainPage();
                 }
             } else {
@@ -1036,12 +1075,13 @@
         if (breadcrumbProdukReq) {
             breadcrumbProdukReq.addEventListener('click', (event) => {
                 event.preventDefault();
-                if (selectedCountryData) {
-                    showProductDetailPage(selectedCountryData.negara);
-                } else if (selectedProductForRequirements) {
-                    showProductCountriesPage(selectedProductForRequirements.nama);
+                // Navigasi kembali tergantung dari mana datangnya (Negara Detail atau Produk Countries)
+                if (lastPageBeforeRequirements.id === 'productDetailPage' && lastPageBeforeRequirements.data) {
+                    showProductDetailPage(lastPageBeforeRequirements.data);
+                } else if (lastPageBeforeRequirements.id === 'productCountriesPage' && lastPageBeforeRequirements.data) {
+                    showProductCountriesPage(lastPageBeforeRequirements.data);
                 } else {
-                    showMainPage();
+                    showMainPage(); // Fallback
                 }
             });
         }
@@ -1062,6 +1102,40 @@
         if (filterGcc) filterGcc.addEventListener('click', (event) => { event.preventDefault(); filterAndRenderCountries('GCC (Arab Teluk)'); });
         if (filterUee) filterUee.addEventListener('click', (event) => { event.preventDefault(); filterAndRenderCountries('UEE (Eurasia)'); });
         if (filterLainnya) filterLainnya.addEventListener('click', (event) => { event.preventDefault(); filterAndRenderCountries('Lainnya'); });
+
+        // Back Buttons
+        if (btnBackNegaraTujuan) {
+            btnBackNegaraTujuan.addEventListener('click', () => {
+                showMainPage();
+            });
+        }
+        if (btnBackProductDetail) {
+            btnBackProductDetail.addEventListener('click', () => {
+                showNegaraTujuanPage();
+            });
+        }
+        if (btnBackExportRequirements) {
+            btnBackExportRequirements.addEventListener('click', () => {
+                // Periksa dari mana datangnya halaman persyaratan
+                if (lastPageBeforeRequirements.id === 'productDetailPage' && lastPageBeforeRequirements.data) {
+                    showProductDetailPage(lastPageBeforeRequirements.data);
+                } else if (lastPageBeforeRequirements.id === 'productCountriesPage' && lastPageBeforeRequirements.data) {
+                    showProductCountriesPage(lastPageBeforeRequirements.data);
+                } else {
+                    showMainPage(); // Fallback jika tidak ada konteks
+                }
+            });
+        }
+        if (btnBackExportProductList) {
+            btnBackExportProductList.addEventListener('click', () => {
+                showMainPage();
+            });
+        }
+        if (btnBackProductCountries) {
+            btnBackProductCountries.addEventListener('click', () => {
+                showExportProductListPage();
+            });
+        }
 
         /* ========================================================= */
         /* Inisialisasi Aplikasi */
