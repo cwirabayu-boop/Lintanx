@@ -142,6 +142,31 @@
         .search-bar-card .border-gray-300 {
             border-color: rgba(255, 255, 255, 0.4); /* Warna border yang lebih terang dan transparan */
         }
+
+        /* Gaya untuk kartu notifikasi pencarian tidak ditemukan */
+        #noResultsCard {
+            position: absolute;
+            top: 25%; /* Posisikan sedikit di bawah tengah */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; /* Lebar responsif */
+            max-width: 400px; /* Lebar maksimum */
+            background-color: rgba(255, 255, 255, 0.9); /* Latar belakang putih semi-transparan */
+            backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #333;
+            z-index: 10; /* Pastikan di atas konten lain */
+            opacity: 0; /* Mulai tersembunyi */
+            transition: opacity 0.5s ease-in-out; /* Animasi fade */
+            pointer-events: none; /* Tidak bisa diklik saat tersembunyi */
+        }
+        #noResultsCard.visible {
+            opacity: 1; /* Tampilkan */
+            pointer-events: auto; /* Bisa diklik saat terlihat */
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -169,8 +194,14 @@
                         <button id="tombolCari" class="w-full px-6 py-3 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50">Telusuri</button>
                     </div>
 
+                    <!-- Kartu Notifikasi Pencarian Tidak Ditemukan -->
+                    <div id="noResultsCard" class="hidden">
+                        <h2 class="text-xl font-semibold mb-2">Maaf, data yang Anda minta belum tersedia</h2>
+                        <p class="text-gray-700">Silakan coba pencarian lain.</p>
+                    </div>
+
                     <!-- Bagian menu "Cari Berdasarkan Negara" dan "Cari Berdasarkan Produk" -->
-                    <div class="w-full max-w-3xl">
+                    <div class="w-full max-w-3xl mt-8">
                         <section class="grid grid-cols-1 gap-8 md:grid-cols-2">
                             <!-- Kartu Cari Berdasarkan Negara -->
                             <div class="p-6 rounded-lg shadow-md transparent-card">
@@ -312,7 +343,6 @@
                             <li>akses,</li>
                             <li>hak infrastruktur,</li>
                             <li>manajemen dan penugasan frekuensi,</li>
-                            <li>faktor pasar dan persaingan usaha,</li>
                             <li>layanan universal.</li>
                         </ul>
                     </div>
@@ -457,7 +487,7 @@
                         <p class="text-gray-700 mb-4">Berdasarkan peraturan NPPO Inggris, berikut adalah poin-poin informatif mengenai persyaratan ekspor kelapa parut ke Inggris:</p>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">1. Pengecualian Sertifikat Phytosanitary:</h3>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
-                            <li><strong>Kelapa parut (desiccated coconut)</strong> tidak memerlukan sertifikat phytosanitary dari otoritas karantina tumbuhan di negara asal (NPPO Indonesia).</li>
+                            <li>Kelapa parut (desiccated coconut) tidak memerlukan sertifikat phytosanitary dari otoritas karantina tumbuhan di negara asal (NPPO Indonesia).</li>
                             <li>Hal ini karena produk kelapa, baik segar maupun kering, dianggap sebagai komoditas dengan risiko rendah terhadap penyebaran hama dan penyakit tanaman.</li>
                         </ul>
                     </div>
@@ -503,14 +533,14 @@
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
                             <li><strong>TR CU 022/2011:</strong> Regulasi teknis ini menetapkan persyaratan untuk pelabelan produk makanan, termasuk tanggal pembuatan, tanggal kedaluwarsa, dan nama produk.</li>
                             <li><strong>Pedoman Asupan Harian:</strong> Regulasi ini juga mengatur penunjukan nilai energi, protein, lemak, dan karbohidrat dalam produk makanan untuk mencegah tindakan yang menipu konsumen.</li>
-                            <li><strong>Persyaratan Khusus:</strong> Rusia mungkin memiliki persyaratan khusus untuk produk kelapa parut tertentu. Penting untuk berkonsultasi dengan pihak berotoritas Rusia atau perwakilan perdagangan untuk mendapatkan informasi terbaru dan terperinci.</li>
+                            <li><strong>Persyaratan Khusus:</strong> Rusia mungkin memiliki persyaratan khusus untuk produk kelapa parut tertentu. Penting untuk berkonsultasi dengan pihak berwenang Rusia atau perwakilan perdagangan untuk mendapatkan informasi terbaru dan terperinci.</li>
                         </ul>
                     </div>
                     <div class="mb-6">
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">4. Prosedur Ekspor:</h3>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
                             <li><strong>Pendaftaran:</strong> Ekspor kelapa parut memerlukan pendaftaran di instansi terkait di Indonesia, seperti Badan Karantina Indonesia.</li>
-                            <li><strong>Pemeriksaan dan Sertifikasi:</strong> Kelapa parut harus melalui pemeriksaan dan sertifikasi oleh pihak berotoritas untuk memastikan memenuhi persyaratan ekspor.</li>
+                            <li><strong>Pemeriksaan dan Sertifikasi:</strong> Kelapa parut harus melalui pemeriksaan dan sertifikasi oleh pihak berwenang untuk memastikan memenuhi persyaratan ekspor.</li>
                             <li><strong>Pengiriman:</strong> Setelah semua persyaratan terpenuhi, kelapa parut dapat dikirim ke Rusia melalui jalur yang telah ditentukan.</li>
                         </ul>
                     </div>
@@ -543,6 +573,8 @@
         const exportRequirementsPage = document.getElementById('exportRequirementsPage');
         const exportProductListPage = document.getElementById('exportProductListPage');
         const productCountriesPage = document.getElementById('productCountriesPage');
+        const noResultsCard = document.getElementById('noResultsCard'); // Baru: Kartu notifikasi hasil tidak ditemukan
+
 
         // Elemen bilah pencarian baru
         const inputPencarianGabungan = document.getElementById('inputPencarianGabungan');
@@ -674,28 +706,8 @@
             exportRequirementsPage.classList.add('hidden-page');
             exportProductListPage.classList.add('hidden-page');
             productCountriesPage.classList.add('hidden-page');
-        }
-
-        // Fungsi untuk menampilkan pesan error kustom (menggantikan alert)
-        function showCustomErrorMessage(message) {
-            const appContainer = document.getElementById('appContainer');
-            const messageBox = document.createElement('div');
-            messageBox.className = 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative z-50 transition-all duration-300 transform scale-0 opacity-0';
-            messageBox.innerHTML = `<strong>Error!</strong><span class="block sm:inline"> ${message}</span>`;
-            appContainer.appendChild(messageBox);
-
-            // Animate in
-            setTimeout(() => {
-                messageBox.classList.remove('scale-0', 'opacity-0');
-                messageBox.classList.add('scale-100', 'opacity-100');
-            }, 10); // Small delay to allow render
-
-            // Animate out and remove after 3 seconds
-            setTimeout(() => {
-                messageBox.classList.remove('scale-100', 'opacity-100');
-                messageBox.classList.add('scale-0', 'opacity-0');
-                setTimeout(() => messageBox.remove(), 300); // Remove after transition
-            }, 3000);
+            noResultsCard.classList.add('hidden', 'opacity-0'); // Sembunyikan notifikasi juga
+            noResultsCard.classList.remove('visible'); // Hapus kelas visible jika ada
         }
 
         // Fungsi untuk parsing query parameters dari string hash
@@ -724,7 +736,6 @@
         }
 
         // Fungsi untuk merender halaman negara tujuan
-        // Sekarang menerima parameter untuk filter dari URL Hash
         function renderNegaraTujuanPage(activeFilterRegion = 'Semua Negara', searchTerm = null) {
             _hideAllPages();
             negaraTujuanPage.classList.remove('hidden-page');
@@ -755,13 +766,12 @@
                 renderProducts(selectedCountryData.produk_list, selectedCountryData.negara);
                 document.title = `Produk Ekspor ke ${selectedCountryData.negara} - Lintanx`;
             } else {
-                console.error("Data negara tidak ditemukan:", countrySlug); // Log the slug
-                navigateTo('#/negara-tujuan'); // Kembali ke daftar negara jika data tidak ditemukan
+                console.error("Data negara tidak ditemukan:", countrySlug);
+                navigateTo('#/'); // Redirect ke halaman utama jika data tidak ditemukan
             }
         }
 
         // Fungsi untuk merender halaman daftar semua produk ekspor
-        // Sekarang menerima parameter untuk filter dari URL Hash
         function renderExportProductListPage(searchTerm = null) {
             _hideAllPages();
             exportProductListPage.classList.remove('hidden-page');
@@ -797,8 +807,8 @@
                 renderCountriesForProduct(selectedProductForCountriesPage.countries_exporting_list, selectedProductForCountriesPage.nama);
                 document.title = `Negara Tujuan untuk ${selectedProductForCountriesPage.nama} - Lintanx`;
             } else {
-                console.error("Data produk tidak ditemukan:", productSlug); // Log the slug
-                navigateTo('#/produk-ekspor'); // Kembali ke daftar semua produk jika tidak ditemukan
+                console.error("Data produk tidak ditemukan:", productSlug);
+                navigateTo('#/'); // Redirect ke halaman utama jika data tidak ditemukan
             }
         }
 
@@ -834,9 +844,8 @@
                 breadcrumbCurrentReq.textContent = `Persyaratan`;
                 document.title = `Persyaratan Ekspor ${product.nama} ke ${country.negara} - Lintanx`;
             } else {
-                console.error("Data negara atau produk tidak ditemukan:", countrySlug, productSlug); // Log the slugs
-                // Fallback jika tidak ditemukan, coba kembali ke halaman utama
-                navigateTo('#/');
+                console.error("Data negara atau produk tidak ditemukan:", countrySlug, productSlug);
+                navigateTo('#/'); // Redirect ke halaman utama jika data tidak ditemukan
             }
         }
 
@@ -856,6 +865,7 @@
 
             countriesToDisplay.forEach(country => {
                 const countryImage = getCountryImage(country.negara);
+
                 const countryCard = document.createElement('div');
                 countryCard.className = 'p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden transparent-content-card';
                 countryCard.innerHTML = `
@@ -947,6 +957,7 @@
 
             countryNames.forEach(countryName => {
                 const countryImage = getCountryImage(countryName);
+
                 const countryCard = document.createElement('div');
                 countryCard.className = 'p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden transparent-content-card';
                 countryCard.innerHTML = `
@@ -962,7 +973,7 @@
             });
         }
 
-        // Memfilter dan merender negara berdasarkan wilayah
+        // Fungsi untuk memfilter dan merender negara berdasarkan wilayah
         function filterAndRenderCountries(region, dataToUse = exportCountriesData) {
             let filteredCountries = [];
             let displayTitle = '';
@@ -980,10 +991,9 @@
                 filteredCountries = dataToUse;
                 displayTitle = 'Semua Negara';
                 filterSemuaNegara.classList.add('filter-active', 'bg-blue-600', 'text-white', 'font-semibold');
-            } else if (region === 'Hasil Pencarian') { // Special case for search results
-                filteredCountries = dataToUse; // `dataToUse` already contains filtered results
+            } else if (region === 'Hasil Pencarian') {
+                filteredCountries = dataToUse;
                 displayTitle = 'Hasil Pencarian Negara';
-                // No specific filter button to activate for 'Hasil Pencarian'
             }
             else {
                 if (region === 'Lainnya') {
@@ -1022,36 +1032,38 @@
             );
             if (filteredCountries.length > 0) {
                 foundCountryMatch = true;
-                // Jika hanya satu negara cocok, langsung ke detail produk negara tersebut
                 if (filteredCountries.length === 1 && slugify(filteredCountries[0].negara) === slugify(searchTerm)) {
                     navigateTo(`#/negara-tujuan/${slugify(filteredCountries[0].negara)}`);
                 } else {
-                    // Jika banyak negara cocok, tampilkan daftar negara yang difilter
                     navigateTo('#/negara-tujuan', { search: searchTerm });
                 }
             }
 
-            // Jika tidak ada negara yang cocok atau jika kita juga mencari produk
+            // Jika tidak ada negara yang cocok, cari produk
             if (!foundCountryMatch) {
                 let filteredProducts = allUniqueProductsData.filter(product =>
                     product.nama.toLowerCase().includes(searchTerm)
                 );
                 if (filteredProducts.length > 0) {
                     foundProductMatch = true;
-                    // Jika hanya satu produk cocok, langsung ke halaman negara untuk produk tersebut
                     if (filteredProducts.length === 1 && slugify(filteredProducts[0].nama) === slugify(searchTerm)) {
                         navigateTo(`#/produk-ekspor/${slugify(filteredProducts[0].nama)}`);
                     } else {
-                        // Jika banyak produk cocok, tampilkan daftar produk yang difilter
                         navigateTo('#/produk-ekspor', { search: searchTerm });
                     }
                 }
             }
             
+            // Jika tidak ada hasil, tampilkan notifikasi
             if (!foundCountryMatch && !foundProductMatch) {
-                showCustomErrorMessage('Tidak ada negara atau produk yang cocok dengan kriteria pencarian Anda.');
-                navigateTo('#/'); // Kembali ke halaman utama jika tidak ada hasil
+                noResultsCard.classList.remove('hidden');
+                noResultsCard.classList.add('visible'); // Tambahkan kelas visible untuk animasi fade in
+                setTimeout(() => {
+                    noResultsCard.classList.remove('visible'); // Hapus kelas visible untuk animasi fade out
+                    noResultsCard.classList.add('hidden'); // Sembunyikan setelah animasi selesai
+                }, 3000); // Sembunyikan setelah 3 detik
             }
+            inputPencarianGabungan.value = ''; // Kosongkan input setelah pencarian
         }
 
         /* ========================================================= */
@@ -1072,8 +1084,12 @@
                 urlHash += `?${queryParts.join('&')}`;
             }
             
-            window.location.hash = urlHash;
-            // handleLocation akan dipanggil secara otomatis oleh event 'hashchange'
+            // Cek apakah hash sudah sama, jika ya, panggil langsung handleLocation
+            if (window.location.hash === urlHash) {
+                handleLocation();
+            } else {
+                window.location.hash = urlHash; // Ini akan memicu event 'hashchange'
+            }
         }
 
         // Objek rute yang memetakan path (setelah #) ke fungsi render
@@ -1088,39 +1104,32 @@
 
         // Fungsi untuk menangani perubahan lokasi (URL hash)
         function handleLocation() {
-            // Dapatkan path lengkap dari hash (misal: "/negara-tujuan?region=Asia")
             let fullHashPath = window.location.hash.substring(1) || '/';
-            
-            // Pisahkan path dari query string
             let pathWithoutQuery = fullHashPath.split('?')[0];
             
-            // Normalisasi pathWithoutQuery: Hapus trailing slash kecuali jika itu hanya '/'
             if (pathWithoutQuery.length > 1 && pathWithoutQuery.endsWith('/')) {
                 pathWithoutQuery = pathWithoutQuery.slice(0, -1);
             }
 
-            // Dapatkan query parameters
             const queryParams = getQueryParams(fullHashPath);
 
             let matchedRoute = null;
             let routeParams = {};
 
-            // Temukan rute yang cocok berdasarkan pathWithoutQuery
             for (const routePath in routes) {
                 const routeParts = routePath.split('/').filter(p => p.length > 0);
-                const pathParts = pathWithoutQuery.split('/').filter(p => p.length > 0);
+                const pathParts = fullHashPath.split('?')[0].split('/').filter(p => p.length > 0);
 
-                // Handle root path separately
+
                 if (routePath === '/') {
-                    if (pathParts.length === 0) { // If path is literally '/' or empty hash
+                    if (pathParts.length === 0) {
                         matchedRoute = routes[routePath];
                         routeParams = {};
                         break;
                     }
-                    continue; // Skip '/' route if pathParts is not empty
+                    continue;
                 }
                 
-                // For non-root routes, ensure part lengths match
                 if (routeParts.length !== pathParts.length) {
                     continue;
                 }
@@ -1148,7 +1157,10 @@
             }
 
             if (matchedRoute) {
-                // Panggil fungsi render yang sesuai dengan parameter yang diekstrak
+                // Sembunyikan kartu notifikasi jika navigasi berhasil
+                noResultsCard.classList.add('hidden', 'opacity-0');
+                noResultsCard.classList.remove('visible');
+
                 if (pathWithoutQuery === '/negara-tujuan') {
                     const region = queryParams.region || 'Semua Negara';
                     const searchTerm = queryParams.search || null;
@@ -1164,130 +1176,118 @@
                     renderExportRequirementsPage(routeParams.countrySlug, routeParams.productSlug);
                 }
                 else {
-                    // For root route, call directly without params
                     matchedRoute();
                 }
             } else {
                 console.warn("Tidak ada rute yang cocok untuk:", fullHashPath);
-                navigateTo('#/');
+                navigateTo('#/'); // Alihkan ke halaman utama jika rute tidak cocok
             }
         }
 
         /* ========================================================= */
         /* Event Listeners */
         /* ========================================================= */
-
-        // Event listener untuk tombol cari di bilah pencarian utama
-        if (tombolCari) {
-            tombolCari.addEventListener('click', lakukanPencarian);
-        }
-        if (inputPencarianGabungan) {
-            inputPencarianGabungan.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    lakukanPencarian();
-                }
-            });
-        }
-
-        // Navigasi utama (tombol "Lihat Semua Negara" dan "Lihat Semua Produk")
-        if (btnCariNegara) {
-            btnCariNegara.addEventListener('click', () => {
-                navigateTo('#/negara-tujuan');
-            });
-        }
-        if (btnCariProduk) {
-            btnCariProduk.addEventListener('click', () => {
-                navigateTo('#/produk-ekspor');
-            });
-        }
-
-        // Breadcrumbs - Sekarang menggunakan navigateTo dengan hash
-        if (breadcrumbHomeNegara) {
-            breadcrumbHomeNegara.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
-        }
-        if (breadcrumbHomeProduct) {
-            breadcrumbHomeProduct.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
-        }
-        if (breadcrumbNegaraProduct) {
-            breadcrumbNegaraProduct.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan'); });
-        }
-        if (breadcrumbHomeReq) {
-            breadcrumbHomeReq.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
-        }
-        if (breadcrumbNegaraReq) {
-            breadcrumbNegaraReq.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan'); });
-        }
-        if (breadcrumbProdukReq) {
-            breadcrumbProdukReq.addEventListener('click', (event) => {
-                event.preventDefault();
-                // Untuk kembali ke halaman produk negara atau produk list, kita perlu membaca dari URL hash saat ini
-                // dan mengarahkan kembali secara cerdas.
-                const currentHash = window.location.hash;
-                if (currentHash.includes('/persyaratan/')) {
-                    const parts = currentHash.split('/');
-                    // Contoh: #/persyaratan/china/santan-kelapa
-                    // parts akan menjadi ["#", "persyaratan", "china", "santan-kelapa"]
-                    if (parts.length >= 3) {
-                        const countrySlug = parts[2]; // e.g., "china"
-                        // Untuk kasus ini, kita kembali ke halaman detail produk untuk negara yang sama
-                        navigateTo(`#/negara-tujuan/${countrySlug}`);
-                    } else {
-                        navigateTo('#/produk-ekspor'); // Fallback jika URL tidak seperti yang diharapkan
-                    }
-                } else {
-                    navigateTo('#/produk-ekspor'); // Default kembali ke daftar semua produk
-                }
-            });
-        }
-        if (breadcrumbHomeProdukList) {
-            breadcrumbHomeProdukList.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
-        }
-        if (breadcrumbHomeProductCountries) {
-            breadcrumbHomeProductCountries.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
-        }
-        if (breadcrumbProdukListProductCountries) {
-            breadcrumbProdukListProductCountries.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/produk-ekspor'); });
-        }
-
-        // Filter wilayah
-        if (filterSemuaNegara) filterSemuaNegara.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Semua Negara' }); });
-        if (filterAsia) filterAsia.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Asia' }); });
-        if (filterUniEropa) filterUniEropa.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Uni Eropa' }); });
-        if (filterGcc) filterGcc.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'GCC (Arab Teluk)' }); });
-        if (filterUee) filterUee.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'UEE (Eurasia)' }); });
-        if (filterLainnya) filterLainnya.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Lainnya' }); });
-
-        // Back Buttons - Sekarang menggunakan history.back()
-        // Fungsi history.back() akan tetap bekerja karena perubahan hash menciptakan entri dalam riwayat browser.
-        if (btnBackNegaraTujuan) {
-            btnBackNegaraTujuan.addEventListener('click', () => { history.back(); });
-        }
-        if (btnBackProductDetail) {
-            btnBackProductDetail.addEventListener('click', () => { history.back(); });
-        }
-        if (btnBackExportRequirements) {
-            btnBackExportRequirements.addEventListener('click', () => { history.back(); });
-        }
-        if (btnBackExportProductList) {
-            btnBackExportProductList.addEventListener('click', () => { history.back(); });
-        }
-        if (btnBackProductCountries) {
-            btnBackProductCountries.addEventListener('click', () => { history.back(); });
-        }
-
-        /* ========================================================= */
-        /* Inisialisasi Aplikasi */
-        /* ========================================================= */
         // Tangani perubahan lokasi saat tombol back/forward browser digunakan
         window.addEventListener('hashchange', handleLocation);
 
         // Panggil handleLocation saat halaman pertama kali dimuat
         document.addEventListener('DOMContentLoaded', () => {
-            // Pastikan hash diatur ke '#/' jika tidak ada saat dimuat
             if (!window.location.hash) {
-                window.location.hash = '#/'; // Langsung set hash, ini akan memicu hashchange dan handleLocation
+                window.location.hash = '#/';
             } else {
-                handleLocation(); // Jika sudah ada hash, langsung panggil handleLocation
+                handleLocation();
+            }
+
+            // Event listener untuk tombol cari di bilah pencarian utama
+            if (tombolCari) {
+                tombolCari.addEventListener('click', lakukanPencarian);
+            }
+            if (inputPencarianGabungan) {
+                inputPencarianGabungan.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        lakukanPencarian();
+                    }
+                });
+            }
+
+            // Navigasi utama (tombol "Lihat Semua Negara" dan "Lihat Semua Produk")
+            if (btnCariNegara) {
+                btnCariNegara.addEventListener('click', () => {
+                    navigateTo('#/negara-tujuan');
+                });
+            }
+            if (btnCariProduk) {
+                btnCariProduk.addEventListener('click', () => {
+                    navigateTo('#/produk-ekspor');
+                });
+            }
+
+            // Breadcrumbs - Sekarang menggunakan navigateTo dengan hash
+            if (breadcrumbHomeNegara) {
+                breadcrumbHomeNegara.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
+            }
+            if (breadcrumbHomeProduct) {
+                breadcrumbHomeProduct.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
+            }
+            if (breadcrumbNegaraProduct) {
+                breadcrumbNegaraProduct.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan'); });
+            }
+            if (breadcrumbHomeReq) {
+                breadcrumbHomeReq.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
+            }
+            if (breadcrumbNegaraReq) {
+                breadcrumbNegaraReq.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan'); });
+            }
+            if (breadcrumbProdukReq) {
+                breadcrumbProdukReq.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const currentHash = window.location.hash;
+                    if (currentHash.includes('/persyaratan/')) {
+                        const parts = currentHash.split('/');
+                        if (parts.length >= 3) {
+                            const countrySlug = parts[2];
+                            navigateTo(`#/negara-tujuan/${countrySlug}`);
+                        } else {
+                            navigateTo('#/produk-ekspor');
+                        }
+                    } else {
+                        navigateTo('#/produk-ekspor');
+                    }
+                });
+            }
+            if (breadcrumbHomeProdukList) {
+                breadcrumbHomeProdukList.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
+            }
+            if (breadcrumbHomeProductCountries) {
+                breadcrumbHomeProductCountries.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/'); });
+            }
+            if (breadcrumbProdukListProductCountries) {
+                breadcrumbProdukListProductCountries.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/produk-ekspor'); });
+            }
+
+            // Filter wilayah
+            if (filterSemuaNegara) filterSemuaNegara.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Semua Negara' }); });
+            if (filterAsia) filterAsia.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Asia' }); });
+            if (filterUniEropa) filterUniEropa.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Uni Eropa' }); });
+            if (filterGcc) filterGcc.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'GCC (Arab Teluk)' }); });
+            if (filterUee) filterUee.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'UEE (Eurasia)' }); });
+            if (filterLainnya) filterLainnya.addEventListener('click', (event) => { event.preventDefault(); navigateTo('#/negara-tujuan', { region: 'Lainnya' }); });
+
+            // Back Buttons - Sekarang menggunakan history.back()
+            if (btnBackNegaraTujuan) {
+                btnBackNegaraTujuan.addEventListener('click', () => { history.back(); });
+            }
+            if (btnBackProductDetail) {
+                btnBackProductDetail.addEventListener('click', () => { history.back(); });
+            }
+            if (btnBackExportRequirements) {
+                btnBackExportRequirements.addEventListener('click', () => { history.back(); });
+            }
+            if (btnBackExportProductList) {
+                btnBackExportProductList.addEventListener('click', () => { history.back(); });
+            }
+            if (btnBackProductCountries) {
+                btnBackProductCountries.addEventListener('click', () => { history.back(); });
             }
         });
     </script>
